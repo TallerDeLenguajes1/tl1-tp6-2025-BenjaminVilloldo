@@ -1,6 +1,6 @@
 ﻿// See https://aka.ms/new-console-template for more information
 using System.Diagnostics;
-
+/*
 Console.WriteLine("Hello, World!");
 int a;
 int b;
@@ -8,172 +8,160 @@ a = 10;
 b = a;
 Console.WriteLine("valor de a:" + a);
 Console.WriteLine("valor de b:" + b);
+using System;
 
-Console.WriteLine("--CALCULADORA--\nIngrese el valor: ");
-
-string? entrada = Console.ReadLine();
-int numero;
-int numeroInvertido = 0;
-int ultimoDigito;
-
-if (int.TryParse(entrada, out numero))
+class Program
 {
-    do
+    static void Main()
     {
-        ultimoDigito = numero % 10; // toma el ultimo digito
-        numeroInvertido = (numeroInvertido * 10) + ultimoDigito;
-        numero /= 10;
-    } while (numero > 0);
-    Console.WriteLine("El numero invertido es: " + numeroInvertido);
+        InvertirNumero();
 
-}
-else
-{
-    Console.WriteLine("No se ingreso un numero, reinicie el sistema.");
-}
-
-Console.WriteLine("Calculadora v1\n");
-
-int entero1;
-int entero2;
-int salir;
-
-
-/////////PUNTO 2/////////
-
-int eleccion;
-do
-{
-
-    Console.WriteLine("1 - Operaciones basicas | 2 - Operacionesavanazdas");
-
-    string? inputOperacion = Console.ReadLine();
-    int operacion;
-    if (int.TryParse(inputOperacion, out operacion))
-    {
-        Console.WriteLine("Ingrese dos enteros:");
-        switch (operacion)
+        int salir;
+        do
         {
-            case 1:
-                while (!int.TryParse(Console.ReadLine(), out entero1)) // esto verifica que la entrada sea un entero
-                {
-                    Console.WriteLine("Ingrese un numero valido");
-                }
-                while (!int.TryParse(Console.ReadLine(), out entero2)) // esto verifica que la entrada sea un entero
-                {
-                    Console.WriteLine("Ingrese un numero valido");
-                }
-                Console.WriteLine("1 - Suma | 2 - Resta | 3 - Multiplicacion | 4 - Division | 5 - Valor absoluto |");
-                string? input = Console.ReadLine();
-                if (int.TryParse(input, out eleccion))
-                {
-                    int resultado;
-                    switch (eleccion)
-                    {
-                        case 1:
-                            resultado = Sumar(entero1, entero2);
-                            Console.WriteLine("El resultado es de: " + resultado);
-                            break;
-                        case 2:
-                            resultado = entero1 - entero2;
-                            Console.WriteLine("El resultado es de: " + resultado);
+            Console.WriteLine("\n--CALCULADORA v1--");
+            Console.WriteLine("1 - Operaciones Básicas");
+            Console.WriteLine("2 - Operaciones Avanzadas");
 
-                            break;
-                        case 3:
-                            resultado = entero1 * entero2;
-                            Console.WriteLine("El resultado es de: " + resultado);
-
-                            break;
-                        case 4:
-                            resultado = entero1 / entero2;
-                            Console.WriteLine("El resultado es de: " + resultado);
-
-                            break;
-                        case 5:
-                            Console.WriteLine("Saliendo...");
-                            break;
-                        case 6:
-
-                            break;
-                        default:
-                            Console.WriteLine("No es una opcion valida.");
-                            return;
-                    }
-                }
-                break;
-            case 2:
-                double resultado2;
-                Console.WriteLine("Ingrese un numero: ");
-                string? inputAvanzado = Console.ReadLine();
-                double.TryParse(inputAvanzado, out double enteroA);
-
-                Console.WriteLine("1 - Valor absoluto | 2 - Cuadradado | 3 - Raiz cuadrada | 4 - Sen | 5 - Coseno | 6 - Parte entera");
-                string? input2 = Console.ReadLine();
-                int.TryParse(input2, out int operacionAvanzada);
-
-                switch (operacionAvanzada)
+            if (int.TryParse(Console.ReadLine(), out int operacion))
+            {
+                switch (operacion)
                 {
                     case 1:
-                        if (enteroA < 0)
-                        {
-                            resultado2 = -enteroA;
-                        }
-                        else
-                        {
-                            resultado2 = enteroA;
-                        }
+                        OperacionesBasicas();
                         break;
                     case 2:
-                        resultado2 = Cuadrado(enteroA);
-                        break;
-                    case 3:
-                        resultado2 = Raiz(enteroA);
-                        break;
-                    case 4:
-                        resultado2 = Seno(enteroA);
-                        break;
-                    case 5:
-                        resultado2 = Coseno(enteroA);
+                        OperacionesAvanzadas();
                         break;
                     default:
-
-                        return;
+                        Console.WriteLine("Opción inválida.");
+                        break;
                 }
-                Console.WriteLine("El resultado es: " + resultado2);
+            }
 
+            Console.WriteLine("\n¿Desea salir?\n1 - Sí\n2 - No");
+            salir = int.TryParse(Console.ReadLine(), out int opcionSalir) ? opcionSalir : 2;
 
+        } while (salir != 1);
+    }
 
+    // -------- Funciones auxiliares --------
 
-
-
-                break;
-            case 3:
-                break;
-            default:
-                Console.WriteLine("No es una opcion valida.");
-                return;
+    static void InvertirNumero()
+    {
+        Console.WriteLine("--INVERTIR NÚMERO--\nIngrese un número:");
+        string? entrada = Console.ReadLine();
+        if (int.TryParse(entrada, out int numero))
+        {
+            int numeroInvertido = 0;
+            while (numero > 0)
+            {
+                numeroInvertido = (numeroInvertido * 10) + (numero % 10);
+                numero /= 10;
+            }
+            Console.WriteLine("Número invertido: " + numeroInvertido);
+        }
+        else
+        {
+            Console.WriteLine("No se ingresó un número válido.");
         }
     }
 
-
-
-    Console.WriteLine("¿Desea salir?\n 1 - Si \n 2 - Seguir calculando");
-    string? entradaSalir = Console.ReadLine();
-
-    if (int.TryParse(entradaSalir, out int opcionSalir))// no entiendo bien como funciona esto
+    static void OperacionesBasicas()
     {
-        salir = opcionSalir;
+        Console.WriteLine("--Operaciones Básicas--");
+        int a = LeerEntero("Ingrese el primer número:");
+        int b = LeerEntero("Ingrese el segundo número:");
+
+        Console.WriteLine("1 - Suma\n2 - Resta\n3 - Multiplicación\n4 - División");
+        if (int.TryParse(Console.ReadLine(), out int opcion))
+        {
+            int resultado = opcion switch
+            {
+                1 => a + b,
+                2 => a - b,
+                3 => a * b,
+                4 => b != 0 ? a / b : throw new DivideByZeroException("No se puede dividir por cero."),
+                _ => throw new ArgumentException("Operación no válida.")
+            };
+            Console.WriteLine($"Resultado: {resultado}");
+        }
+        else
+        {
+            Console.WriteLine("Opción inválida.");
+        }
     }
-    else
+
+    static void OperacionesAvanzadas()
     {
-        salir = 2;
+        Console.WriteLine("--Operaciones Avanzadas--");
+        double a = LeerDouble("Ingrese un número:");
+
+        Console.WriteLine("1 - Valor absoluto\n2 - Cuadrado\n3 - Raíz cuadrada\n4 - Seno\n5 - Coseno\n6 - Parte entera");
+        if (int.TryParse(Console.ReadLine(), out int opcion))
+        {
+            double resultado = opcion switch
+            {
+                1 => Math.Abs(a),
+                2 => Cuadrado(a),
+                3 => Raiz(a),
+                4 => Seno(a),
+                5 => Coseno(a),
+                6 => Math.Truncate(a),
+                _ => throw new ArgumentException("Operación no válida.")
+            };
+            Console.WriteLine($"Resultado: {resultado}");
+        }
+        else
+        {
+            Console.WriteLine("Opción inválida.");
+        }
     }
 
-} while (salir != 1);
+    static int LeerEntero(string mensaje)
+    {
+        int valor;
+        Console.WriteLine(mensaje);
+        while (!int.TryParse(Console.ReadLine(), out valor))
+        {
+            Console.WriteLine("Ingrese un número válido:");
+        }
+        return valor;
+    }
 
+    static double LeerDouble(string mensaje)
+    {
+        double valor;
+        Console.WriteLine(mensaje);
+        while (!double.TryParse(Console.ReadLine(), out valor))
+        {
+            Console.WriteLine("Ingrese un número válido:");
+        }
+        return valor;
+    }
 
-int Sumar(int a, int b) => a + b;
-double Cuadrado(double a) => a * a;
-double Raiz(double a) => Math.Sqrt(a);
-double Seno(double anguloEnGrados) => Math.Sin(anguloEnGrados * Math.PI / 180);
-double Coseno(double anguloEnGrados) => Math.Cos(anguloEnGrados * Math.PI / 180);
+    // -------- Operaciones matemáticas --------
+
+    static double Cuadrado(double a) => a * a;
+    static double Raiz(double a) => Math.Sqrt(a);
+    static double Seno(double grados) => Math.Sin(grados * Math.PI / 180);
+    static double Coseno(double grados) => Math.Cos(grados * Math.PI / 180);
+}
+
+*/
+Console.WriteLine("Ingrese una cadena: ");
+string entradaCadena = Console.ReadLine();
+int cantletras = entradaCadena.Length;
+Console.WriteLine("El mensaje que se muestra es: " + cantletras);
+Console.WriteLine("Ingrese la segunda cadena: ");
+string entradaDos = Console.ReadLine();
+string entradasConcatenadas = string.Concat(entradaCadena, entradaDos);
+Console.WriteLine("Las cadenas concatenadas: " + entradasConcatenadas);
+
+Console.WriteLine("Ingresa el inicio y el final de la cadena");
+int ini;
+int fin;
+int.TryParse(Console.ReadLine(), out ini);
+int.TryParse(Console.ReadLine(), out fin);
+string subcadena = entradaCadena.Substring(ini, fin);
+Console.WriteLine($"La cadena {entradaCadena} tiene la subcadena {subcadena}");
